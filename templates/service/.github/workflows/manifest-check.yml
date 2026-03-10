@@ -1,0 +1,52 @@
+name: Ops Hub Manifest Check
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'ops-hub/features.yml'
+
+jobs:
+  manifest-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install js-yaml
+        run: npm install --no-save js-yaml
+
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          files: 'src/**'
+
+      - name: Check manifest coverage (advisory)
+        if: steps.changed.outputs.any_changed == 'true'
+        run: |
+          echo "${{ steps.changed.outputs.all_changed_files }}" | tr ' ' '\n' | \
+            xargs node -e "
+              import yaml from 'js-yaml';
+              import fs from 'fs';
+              const args = process.argv.slice(2);
+              const srcRoot = process.env.OPS_HUB_SRC_ROOT ?? 'src/main';
+              const staged = args.filter(f => f.startsWith(srcRoot));
+              if (!staged.length) process.exit(0);
+              const manifestPath = 'ops-hub/features.yml';
+              if (!fs.existsSync(manifestPath)) { console.warn('⚠️  ops-hub/features.yml not found'); process.exit(0); }
+              const manifest = yaml.load(fs.readFileSync(manifestPath, 'utf8'));
+              const registered = new Set((manifest?.features ?? []).flatMap(f => f.implementation ?? []));
+              let warned = false;
+              for (const file of staged) {
+                if (!registered.has(file)) {
+                  console.warn('⚠️  [ops-hub] Not in manifest: ' + file);
+                  warned = true;
+                }
+              }
+              if (warned) console.warn('   Tip: update ops-hub/features.yml');
+              process.exit(0);
+            " --input-type=module
