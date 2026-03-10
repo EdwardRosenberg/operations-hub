@@ -1,0 +1,5 @@
+repos:
+  - repo: https://github.com/OWNER/ops-hub
+    rev: main  # pin to a tag once the hub repo has releases
+    hooks:
+      - id: manifest-coverage-check

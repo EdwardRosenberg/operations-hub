@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Generated at build time — do not commit
+content/
+generated/
+
+# Docusaurus build output
+.docusaurus/
+build/
+
+# Environment variables
+.env
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/

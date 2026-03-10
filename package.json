@@ -1,0 +1,39 @@
+{
+  "name": "ops-hub",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "docusaurus start",
+    "build": "node scripts/aggregate.js && node scripts/fetch-test-results.js && node scripts/generate-docusaurus-config.js && docusaurus build",
+    "aggregate": "node scripts/aggregate.js",
+    "fetch-results": "node scripts/fetch-test-results.js",
+    "gen-config": "node scripts/generate-docusaurus-config.js",
+    "onboard": "node scripts/onboard.js",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/plugin-content-docs": "^3.7.0",
+    "@easyops-cn/docusaurus-search-local": "^0.44.0",
+    "@mdx-js/react": "^3.0.0",
+    "@octokit/rest": "^21.0.0",
+    "adm-zip": "^0.5.0",
+    "clsx": "^2.0.0",
+    "fast-xml-parser": "^4.3.0",
+    "js-yaml": "^4.1.0",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.7.0",
+    "@docusaurus/tsconfig": "^3.7.0",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": { "node": ">=20" }
+}

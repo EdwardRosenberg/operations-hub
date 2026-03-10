@@ -1,0 +1,19 @@
+# ops-hub/features.yml
+# Declare your service's features here.
+# Each feature links implementation files, tests, and observability dashboards
+# back to a single human-readable entry in the Ops Hub feature matrix.
+
+features:
+  - id: example-feature
+    title: Example Feature
+    description: Replace this with a real feature description.
+    status: active
+    implementation:
+      - src/main/java/com/example/ExampleService.java
+    tests:
+      - class: com.example.ExampleServiceTest
+        cases:
+          - shouldDoSomething
+    observability:
+      grafana: ""   # append to grafana_base in registry.yml
+      kibana: ""    # append to kibana_base in registry.yml

@@ -1,0 +1,9 @@
+- id: manifest-coverage-check
+  name: Check ops-hub manifest coverage
+  description: >
+    Warns when staged files under src/main/ are absent from ops-hub/features.yml.
+    Non-blocking — always exits 0.
+  language: node
+  entry: scripts/hooks/check-manifest.js
+  files: ^src/
+  pass_filenames: true

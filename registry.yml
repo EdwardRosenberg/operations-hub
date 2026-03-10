@@ -1,0 +1,18 @@
+# ops-hub/registry.yml
+# Each entry registers one service repository with this hub.
+# Run the register-with-hub workflow in the service repo to add entries automatically.
+
+services:
+  - id: url-shortener
+    label: URL Shortener
+    repo: OWNER/url-shortener-example     # replace OWNER before first build
+    branch: main
+    docs_path: docs/
+    manifest_path: ops-hub/features.yml
+    gha_workflow: ci.yml
+    manifest_coverage:
+      warn_threshold: 60
+      fail_threshold: null
+    observability:
+      grafana_base: ""
+      kibana_base: ""

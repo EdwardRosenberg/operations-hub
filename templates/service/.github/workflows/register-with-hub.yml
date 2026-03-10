@@ -1,0 +1,37 @@
+name: Register with Ops Hub
+
+on:
+  workflow_dispatch:
+    inputs:
+      hub_repo:
+        description: 'Hub repository (OWNER/ops-hub)'
+        required: true
+        default: 'OWNER/ops-hub'
+      service_label:
+        description: 'Human-readable service label (optional)'
+        required: false
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Clone ops-hub and run onboard script
+        env:
+          HUB_REPO: ${{ inputs.hub_repo }}
+          SERVICE_ID: ${{ github.event.repository.name }}
+          SERVICE_REPO: ${{ github.repository }}
+          SERVICE_LABEL: ${{ inputs.service_label }}
+          SERVICE_BRANCH: ${{ github.event.repository.default_branch }}
+          GH_TOKEN: ${{ secrets.HUB_REGISTRATION_TOKEN }}
+        run: |
+          npx --yes degit "$HUB_REPO/scripts" /tmp/hub-scripts
+          cd /tmp/hub-scripts
+          npm init -y
+          npm install @octokit/rest js-yaml
+          node onboard.js
